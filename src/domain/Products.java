@@ -18,7 +18,6 @@ public class Products {
 
     private int quantity;
 
-
     @ManyToMany(mappedBy = "products")
     private List<Customer> customers = new ArrayList<>();
 

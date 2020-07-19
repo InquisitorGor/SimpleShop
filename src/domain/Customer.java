@@ -6,10 +6,22 @@ import java.util.List;
 
 @Entity
 @Table(name = "customer")
+@NamedNativeQueries({
+        @NamedNativeQuery(name = Customer.GET_LIST_OF_GOODS,
+                query = "select p.product_name, p.quantity, p.quantity * p.unitprice AS FinalSum " +
+                        "from product AS p " +
+                        "join customer_products AS cP using(product_id) " +
+                        "join customer c2 on cP.customer_id = c2.id " +
+                        "join customer_details cD on c2.id = cD.customer_details_id " +
+                        "where customer_details.login = :login and customer_details.password"
+        )
+})
 public class Customer {
     @Id
     @GeneratedValue
     private int id;
+
+    public static final String GET_LIST_OF_GOODS = "Prices.getListOfGoods";
 
     private String firstName;
 
@@ -20,9 +32,9 @@ public class Customer {
     private CustomerDetails customerDetails;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "customer_customer_details",
+    @JoinTable(name = "customer_products",
             joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "customer_details_id")
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Products> products = new ArrayList<>();
 

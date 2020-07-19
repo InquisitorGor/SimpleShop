@@ -1,36 +1,34 @@
 import domain.Prices;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        loadPrices();
-
         System.out.println("Sign in or sign up? (1/2)");
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            String choice = reader.readLine();
+        Scanner scanner = new Scanner(System.in);
+            String choice = scanner.nextLine();
             switch (choice){
-                case "1": new Authorization();
-                case "2": new Registration();
+                case "1": {
+                    new Authorization();
+                    break;
+                }
+                case "2": {
+                    new Registration();
+                    break;
+                }
                 default:
                     System.out.println("Are you ok? You were supposed to choose" +
                             " two options: 1 or 2, but you chose invalid value " + choice);
             }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
     }
 
-    private static void loadPrices() {
+    static void loadPrices() {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("NewPersistenceUnit");
         EntityManager em = emf.createEntityManager();

@@ -5,11 +5,19 @@ import java.util.Date;
 
 @Entity
 @Table(name = "customer_details")
+@NamedQueries({
+        @NamedQuery(name = CustomerDetails.GET_LOGIN_AND_PASSWORD,
+                query = "select cD.login, cD.password " +
+                        "from CustomerDetails cD " +
+                        "where cD.login = :login and cD.password = :password")
+})
 public class CustomerDetails {
     @Id
     @GeneratedValue
     @Column(name = "customer_details_id")
     private int id;
+
+    public static final String GET_LOGIN_AND_PASSWORD = "Prices.getLoginAndPassword";
 
     private String login;
 
