@@ -6,16 +6,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "customer")
-@NamedNativeQueries({
-        @NamedNativeQuery(name = Customer.GET_LIST_OF_GOODS,
-                query = "select p.product_name, p.quantity, p.quantity * p.unitprice AS FinalSum " +
-                        "from product AS p " +
-                        "join customer_products AS cP using(product_id) " +
-                        "join customer c2 on cP.customer_id = c2.id " +
-                        "join customer_details cD on c2.id = cD.customer_details_id " +
-                        "where customer_details.login = :login and customer_details.password"
-        )
-})
 public class Customer {
     @Id
     @GeneratedValue
@@ -37,6 +27,20 @@ public class Customer {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Products> products = new ArrayList<>();
+
+
+    @PostPersist
+    private void info() {
+        System.out.println("Customer was added successfully");
+    }
+
+    public double getTotalSum(){
+        double sum = 0.0;
+        for (Products product:products) {
+            sum += product.getQuantity() * product.getUnitPrice();
+        }
+        return sum;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -70,4 +74,5 @@ public class Customer {
     public void setProducts(List<Products> products) {
         this.products = products;
     }
+
 }

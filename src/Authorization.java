@@ -13,9 +13,6 @@ public class Authorization {
     EntityManager em = emf.createEntityManager();
     Customer customer;
 
-    private String login;
-    private String password;
-
     public Authorization() {
         signIn();
     }
@@ -23,7 +20,6 @@ public class Authorization {
 
     private void purchaseGoods() {
         em.getTransaction().begin();
-        customer = em.find();
 
         System.out.println("List of goods");
         Query query = em.createNamedQuery(Prices.GET_PRODUCT_NAME_AND_PRICE);
@@ -34,6 +30,10 @@ public class Authorization {
         }
         while (true) {
             Scanner scanner = new Scanner(System.in);
+            System.out.println("Do u want to stop shopping? (yes/no)");
+            String choice = scanner.nextLine();
+            if (choice.equals("yes")) break;
+
             System.out.println("What do you want to buy " +
                     "and how many (specify amount after good)? ");
             String good = scanner.nextLine();
@@ -50,18 +50,14 @@ public class Authorization {
             products.getCustomers().add(customer);
             customer.getProducts().add(products);
 
-            System.out.println("Do u want to stop shopping? (yes/no)");
-            String choice = scanner.nextLine();
-            if (choice.equals("yes")) break;
+
         }
 
-        Query query1 = em.createNativeQuery(Customer.GET_LIST_OF_GOODS, Object[].class);
-        List<Object[]> list1 = query.getResultList();
-        for (Object[] p : list1) {
-            System.out.print(p[0] + " ");
-            System.out.print(p[1] + " Total sum: ");
-            System.out.print(p[2] );
+        List<Products> list2 = customer.getProducts();
+        for (Products p : list2) {
+            System.out.println(p);
         }
+        System.out.println("Total sum: " + customer.getTotalSum());
         em.getTransaction().commit();
     }
 
@@ -73,16 +69,20 @@ public class Authorization {
 
             System.out.println("Input password");
             String password = scanner.nextLine();
-            TypedQuery<Object[]> query = em.createNamedQuery(CustomerDetails.GET_LOGIN_AND_PASSWORD, Object[].class)
-                    .setParameter("login", login)
-                    .setParameter("password", password);
-            Object[] temp = query.getSingleResult();
-            if (temp == null) System.out.println("User was not found");
-            else{
-                login = (String) temp[0];
-                password = (String) temp[1];//getCustomer
+
+            try {
+                TypedQuery<Customer> query = em.createNamedQuery(CustomerDetails.GET_CUSTOMER_BY_LOGIN_AND_PASSWORD, Customer.class)
+                        .setParameter("login", login)
+                        .setParameter("password", password);
+                customer = query.getSingleResult();
+                System.out.println("User was found");
                 purchaseGoods();
+                return;
+
+            } catch (NoResultException ex) {
+                System.out.println("User was not found");
             }
+
             System.out.println("Do you want to try again? (yes, no)");
             String choice = scanner.nextLine();
             if (choice.equals("no")) break;

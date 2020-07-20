@@ -6,10 +6,11 @@ import java.util.Date;
 @Entity
 @Table(name = "customer_details")
 @NamedQueries({
-        @NamedQuery(name = CustomerDetails.GET_LOGIN_AND_PASSWORD,
-                query = "select cD.login, cD.password " +
+        @NamedQuery(name = CustomerDetails.GET_CUSTOMER_BY_LOGIN_AND_PASSWORD,
+                query = "select c " +
                         "from CustomerDetails cD " +
-                        "where cD.login = :login and cD.password = :password")
+                        "join Customer c on c.customerDetails = cD.customer.customerDetails "  +
+                        "where  cD.login = :login and cD.password = :password")
 })
 public class CustomerDetails {
     @Id
@@ -17,7 +18,7 @@ public class CustomerDetails {
     @Column(name = "customer_details_id")
     private int id;
 
-    public static final String GET_LOGIN_AND_PASSWORD = "Prices.getLoginAndPassword";
+    public static final String GET_CUSTOMER_BY_LOGIN_AND_PASSWORD = "Prices.getCustomerByLoginAndPassword";
 
     private String login;
 

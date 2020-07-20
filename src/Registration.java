@@ -44,7 +44,7 @@ public class Registration {
         customerDetails.setLogin(login);
         customerDetails.setPassword(password);
         customer.setCustomerDetails(customerDetails);
-        System.out.println("You signed up successfully ");
+        em.persist(customer);
         em.getTransaction().commit();
 
     }
