@@ -1,4 +1,8 @@
+package depricated;
+
 import domain.Prices;
+import registr.Registration;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

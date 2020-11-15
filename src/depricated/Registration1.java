@@ -1,3 +1,5 @@
+package depricated;
+
 import domain.Customer;
 import domain.CustomerDetails;
 import domain.Prices;
@@ -7,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Scanner;
 
-public class Registration {
+public class Registration1 {
 
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("NewPersistenceUnit");
@@ -15,8 +17,8 @@ public class Registration {
     Customer customer;
 
 
-    public Registration() {
-        //Main.loadPrices();
+    public Registration1() {
+        //depricated.Main.loadPrices();
         signUp();
 
     }

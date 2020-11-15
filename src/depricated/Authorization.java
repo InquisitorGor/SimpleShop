@@ -1,3 +1,5 @@
+package depricated;
+
 import domain.Customer;
 import domain.CustomerDetails;
 import domain.Prices;
