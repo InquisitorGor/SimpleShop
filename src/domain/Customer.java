@@ -12,6 +12,7 @@ public class Customer {
     private int id;
 
     public static final String GET_LIST_OF_GOODS = "Prices.getListOfGoods";
+    public static final String GET_LIST_OF_GOODS1 = "Prices.getListOfGoods";
 
     private String firstName;
 
